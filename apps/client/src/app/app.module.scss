@@ -19,6 +19,12 @@
   justify-content: center;
 }
 
+.longText {
+  overflow-wrap: break-word;
+  white-space: normal;
+  word-break: break-all;
+  display: inline-block;
+}
 .app :global(header) {
   background-color: #143055;
   color: white;
