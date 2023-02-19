@@ -37,16 +37,19 @@ export function App() {
       <main>
         <h2>
           {" "}
-          Current Pi Value:{" "}
-          <span className={styles.longText}>{data?.pi_value}</span>
-        </h2>
-        <h2>
-          Circumference :{" "}
-          <span className={styles.longText}>{data?.circumference}</span>
-        </h2>
-        <h2>
-          {" "}
           <button onClick={piButtonClicked}>Increment pi value</button>
+        </h2>
+        <h2>
+          <span className={styles.longText}>
+            {" "}
+            Current Pi Value:{data?.pi_value}
+          </span>
+        </h2>
+        <h2>
+          <span className={styles.longText}>
+            {" "}
+            Circumference:{data?.circumference}
+          </span>
         </h2>
       </main>
     </div>
