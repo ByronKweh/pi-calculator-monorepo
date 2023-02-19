@@ -1,22 +1,46 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test, TestingModule } from "@nestjs/testing";
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+import { AppModule } from "./app.module";
+import { request } from "http";
+import {
+  CacheModule,
+  CACHE_MANAGER,
+  INestApplication,
+  Module,
+} from "@nestjs/common";
 
-describe('AppController', () => {
-  let app: TestingModule;
+describe("AppController (e2e)", () => {
+  let app: INestApplication;
+  let controller: AppController;
 
   beforeAll(async () => {
-    app = await Test.createTestingModule({
+    const moduleRef = await Test.createTestingModule({
+      imports: [CacheModule.register()],
       controllers: [AppController],
       providers: [AppService],
     }).compile();
+
+    app = moduleRef.createNestApplication();
+    await app.init();
+
+    controller = moduleRef.get<AppController>(AppController);
   });
 
-  describe('getData', () => {
-    it('should return "Welcome to api!"', () => {
-      const appController = app.get<AppController>(AppController);
-      expect(appController.getData()).toEqual({message: 'Welcome to api!'});
+  afterAll(async () => {
+    if (app) {
+      await app.close();
+    }
+  });
+
+  describe("/data (GET)", () => {
+    // TODO Add cases of different cache states
+    it("should return the PiValueWithSunCircumference object", async () => {
+      const result = await controller.getData();
+      expect(result).toBeDefined();
+      expect(result.pi_value).toBeDefined();
+      expect(result.circumference).toBeDefined();
     });
   });
 });
